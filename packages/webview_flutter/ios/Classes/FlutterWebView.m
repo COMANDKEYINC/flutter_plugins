@@ -249,7 +249,8 @@
 
 - (void) takeScreenshot:(FlutterResult)result {
   if (_webView != nil) {
-    UIGraphicsBeginImageContext(_webView.bounds.size);
+    //UIGraphicsBeginImageContext(_webView.bounds.size);
+    UIGraphicsBeginImageContextWithOptions(_webView.bounds.size, NO, 0);
     [_webView.layer renderInContext: UIGraphicsGetCurrentContext()];
     UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
