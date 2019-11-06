@@ -64,6 +64,12 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
       String userAgent = (String) params.get("userAgent");
       updateUserAgent(userAgent);
     }
+
+    if (params.containsKey("supportMultipleWindows")) {
+      boolean supportMultipleWindows = (boolean) params.get("supportMultipleWindows");
+      updateSupportMultipleWindows(supportMultipleWindows);
+    }
+
     if (params.containsKey("initialUrl")) {
       String url = (String) params.get("initialUrl");
       webView.loadUrl(url);
@@ -337,6 +343,10 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
 
   private void updateUserAgent(String userAgent) {
     webView.getSettings().setUserAgentString(userAgent);
+  }
+
+  private void updateSupportMultipleWindows(boolean supportMultipleWindows) {
+    webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(supportMultipleWindows);
   }
 
   @Override
