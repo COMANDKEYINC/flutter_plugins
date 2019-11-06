@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -163,6 +164,12 @@ abstract class WebViewPlatformController {
   Future<String> getTitle() {
     throw UnimplementedError(
         "WebView getTitle is not implemented on the current platform");
+  }
+
+  // Takes screenshot of the current webview
+  Future<Uint8List> takeScreenshot() {
+    throw UnimplementedError(
+        "WebView takeScreenshot is not implemented on the current platform");
   }
 }
 

@@ -120,6 +120,8 @@
     [self clearCache:result];
   } else if ([[call method] isEqualToString:@"getTitle"]) {
     [self onGetTitle:result];
+  } else if ([[call method] isEqualToString:@"takeScreenshot"]) {
+    [self takeScreenshot:result];
   } else {
     result(FlutterMethodNotImplemented);
   }
@@ -243,6 +245,17 @@
 - (void)onGetTitle:(FlutterResult)result {
   NSString* title = _webView.title;
   result(title);
+}
+
+- (void) takeScreenshot:(FlutterResult)result {
+  if (_webView != nil) {
+    UIGraphicsBeginImageContext(_webView.bounds.size);
+    [_webView.layer renderInContext: UIGraphicsGetCurrentContext()];
+    UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    NSData* data = UIImagePNGRepresentation(image);
+    result([FlutterStandardTypedData typedDataWithBytes:data]);
+  }
 }
 
 // Returns nil when successful, or an error message when one or more keys are unknown.
