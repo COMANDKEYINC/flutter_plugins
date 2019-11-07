@@ -22,10 +22,16 @@ abstract class WebViewPlatformCallbacksHandler {
   /// Invoked by [WebViewPlatformController] when a navigation request is pending.
   ///
   /// If true is returned the navigation is allowed, otherwise it is blocked.
-  bool onNavigationRequest({String url, bool isForMainFrame});
+  FutureOr<bool> onNavigationRequest({String url, bool isForMainFrame});
 
   /// Invoked by [WebViewPlatformController] when a page has finished loading.
   void onPageFinished(String url);
+
+  /// Invoked by [WebViewPlatformController] when a page has Receive Error.
+  void onPageReceiveError({String url, int code, String description});
+
+  /// Invoked by [WebViewPlatformController] when a page has Started.
+  void onPageStarted(String url);
 
   /// Invoked by [WebViewPlatformController] when a page is loading.
   void onProgress(int progress);

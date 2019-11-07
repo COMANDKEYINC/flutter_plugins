@@ -68,10 +68,19 @@ enum NavigationDecision {
 /// `navigation` should be handled.
 ///
 /// See also: [WebView.navigationDelegate].
-typedef NavigationDecision NavigationDelegate(NavigationRequest navigation);
+typedef FutureOr<NavigationDecision> NavigationDelegate(
+    NavigationRequest navigation);
 
 /// Signature for when a [WebView] has finished loading a page.
 typedef void PageFinishedCallback(String url);
+
+/// Signature for when a [WebView] receive a error.
+/// Code may be NSURLErrorDomain code or const from Android WebViewClient or http status code.
+/// Description is optional
+typedef void PageReceiveErrorCallback(String url, int code, String description);
+
+/// Signature for when a [WebView] has started loading a page.
+typedef void PageStartedCallback(String url);
 
 /// Signature for when a [WebView] is loading a page.
 typedef void PageLoadingCallback(int progress);
@@ -149,6 +158,8 @@ class WebView extends StatefulWidget {
     this.initialMediaPlaybackPolicy =
         AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
     this.supportMultipleWindows = false,
+    this.onPageReceiveError,
+    this.onPageStarted,
   })  : assert(javascriptMode != null),
         assert(initialMediaPlaybackPolicy != null),
         super(key: key);
@@ -312,6 +323,10 @@ class WebView extends StatefulWidget {
   /// - [supportMultipleWindows] enable multiple windows support in Android
   final bool supportMultipleWindows;
 
+  final PageReceiveErrorCallback onPageReceiveError;
+
+  final PageStartedCallback onPageStarted;
+
   @override
   State<StatefulWidget> createState() => _WebViewState();
 }
@@ -459,11 +474,12 @@ class _PlatformCallbacksHandler implements WebViewPlatformCallbacksHandler {
   }
 
   @override
-  bool onNavigationRequest({String url, bool isForMainFrame}) {
+  FutureOr<bool> onNavigationRequest({String url, bool isForMainFrame}) async {
     final NavigationRequest request =
         NavigationRequest._(url: url, isForMainFrame: isForMainFrame);
     final bool allowNavigation = _widget.navigationDelegate == null ||
-        _widget.navigationDelegate(request) == NavigationDecision.navigate;
+        await _widget.navigationDelegate(request) ==
+            NavigationDecision.navigate;
     return allowNavigation;
   }
 
@@ -478,6 +494,20 @@ class _PlatformCallbacksHandler implements WebViewPlatformCallbacksHandler {
   void onProgress(int progress) {
     if (_widget.onProgress != null) {
       _widget.onProgress(progress);
+    }
+  }
+
+  @override
+  void onPageReceiveError({String url, int code, String description}) {
+    if (_widget.onPageReceiveError != null) {
+      _widget.onPageReceiveError(url, code, description);
+    }
+  }
+
+  @override
+  void onPageStarted(String url) {
+    if (_widget.onPageStarted != null) {
+      _widget.onPageStarted(url);
     }
   }
 
