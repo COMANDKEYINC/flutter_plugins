@@ -5,6 +5,7 @@
 package io.flutter.plugins.webviewflutter;
 
 import android.annotation.TargetApi;
+import android.graphics.Bitmap;
 import android.content.Context;
 import android.hardware.display.DisplayManager;
 import android.os.Build;
