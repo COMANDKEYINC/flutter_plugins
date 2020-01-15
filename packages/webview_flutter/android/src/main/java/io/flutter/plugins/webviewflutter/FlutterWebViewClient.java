@@ -4,7 +4,7 @@
 
 package io.flutter.plugins.webviewflutter;
 
-import android.support.annotation.NonNull;
+import android.annotation.NonNull;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.Build;
