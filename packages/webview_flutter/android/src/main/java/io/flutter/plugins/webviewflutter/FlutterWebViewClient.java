@@ -4,7 +4,6 @@
 
 package io.flutter.plugins.webviewflutter;
 
-import android.annotation.NonNull;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -202,9 +201,9 @@ class FlutterWebViewClient {
       @TargetApi(Build.VERSION_CODES.LOLLIPOP)
       @Override
       public void onReceivedHttpError(
-          @NonNull WebView view,
-          @NonNull WebResourceRequest request,
-          @NonNull WebResourceResponse errorResponse) {
+          /* @NonNull */ WebView view,
+          /* @NonNull */ WebResourceRequest request,
+          /* @NonNull */ WebResourceResponse errorResponse) {
         FlutterWebViewClient.this.onReceiveError(
             view, errorResponse.getStatusCode(), null, request.getUrl().toString());
       }
@@ -212,9 +211,9 @@ class FlutterWebViewClient {
       @TargetApi(Build.VERSION_CODES.LOLLIPOP)
       @Override
       public void onReceivedError(
-          @NonNull WebView view,
-          @NonNull WebResourceRequest request,
-          @NonNull WebResourceErrorCompat error) {
+          /* @NonNull */ WebView view,
+          /* @NonNull */ WebResourceRequest request,
+          /* @NonNull */ WebResourceErrorCompat error) {
         //TODO: is really need to check WebViewFeature.isFeatureSupported() and api version.
         FlutterWebViewClient.this.onReceiveError(
             view,
